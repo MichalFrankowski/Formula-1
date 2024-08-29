@@ -40,11 +40,11 @@ def cards_view():
             if idx < len(schedule):
                 row = schedule.iloc[idx]
                 with cols[j]:
-                    st_card(title=row["EventName"],country=row["Country"],location=row["Location"], date=row["EventDate"],page_id=row["RoundNumber"])
+                    st_card(title=row["EventName"],country=row["Country"],location=row["Location"], date=row["EventDate"], page_id=row["RoundNumber"], year=option)
 
     st.divider()
     with st.expander("F1 Data"):
-         st.dataframe(schedule,hide_index=True)
+         st.dataframe(schedule, hide_index=True)
 
 if __name__ == "__main__":
     cards_view()

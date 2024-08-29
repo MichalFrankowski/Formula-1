@@ -9,7 +9,7 @@ def initialize_theme(page_id):
     if theme is None:
         theme = st_theme(adjust=True,key=int(page_id))
 
-def st_card(title, country, location, date, page_id):
+def st_card(title, country, location, date, page_id, year):
 
     # Ensure the theme is initialized
     initialize_theme(page_id)
@@ -42,7 +42,7 @@ def st_card(title, country, location, date, page_id):
             transform: scale(1.03); /* Scale the card on hover */
         }}
         </style>
-        <a href="?page=details&card_id={page_id}" target = "_self" style="text-decoration: none;">
+        <a href="?page=details&card_id={page_id}&year={year}" target = "_self" style="text-decoration: none;">
             <div class="card">
                 <h4>{title}</h4>
                 <h5>Country: {country}</h5>

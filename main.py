@@ -23,8 +23,6 @@ set_default_page()
 # Get the page query parameter
 params = st.query_params
 page = params.get('page', ['main'])
-#page
-#cards_view()
 
 # Load different views based on the page parameter
 if page == 'main':
