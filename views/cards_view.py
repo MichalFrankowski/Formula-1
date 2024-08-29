@@ -5,7 +5,15 @@ import fastf1
 # importing custom components
 from components.card import st_card
 
+# Cache the data fetching process to prevent re-fetching on every interaction
+@st.cache_data
+def load_schedule(season_year):
+    schedule = fastf1.get_event_schedule(int(season_year))
+    schedule['EventDate'] = pd.to_datetime(schedule['EventDate']).dt.strftime('%d %b %Y')
+    return schedule
+
 def cards_view():
+    print("this is 1 from cards_view")
     with st.form("season_form",border=False):
         # creating columns
         header = st.columns([10,4,2,2],vertical_alignment="bottom")
@@ -19,13 +27,12 @@ def cards_view():
 
     st.divider()
     st.subheader("Season " + option + " Schedule" )
-    
-    schedule = fastf1.get_event_schedule(int(option))
-    schedule['EventDate'] = pd.to_datetime(schedule['EventDate']).dt.strftime('%d %b %Y')
+
+    schedule = load_schedule(option)
 
     # Create a card for each row in the DataFrame and Display cards in a grid layout of 5x5
     rows = 5
-
+    
     for i in range(rows):
         cols = st.columns(5,vertical_alignment="center", gap="small")  # Create 5 columns per row
         for j in range(5):

@@ -1,10 +1,13 @@
 import streamlit as st
 from streamlit_theme import st_theme # https://pypi.org/project/st-theme/
 
-theme = st_theme()
-background_color = theme["backgroundColor"]
-text_color = theme["fadedText60"]
-border_color = theme["fadedText10"]
+# Check the theme before accessing its items
+print("this is 1 from card")
+theme = st_theme(adjust=True) 
+
+background_color = theme['backgroundColor']
+text_color = theme['fadedText60']
+border_color = theme['fadedText10']    
 
 def st_card(title, country, location, date, page_id):
     # Create a card with an anchor tag
