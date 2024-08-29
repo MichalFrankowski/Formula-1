@@ -1,15 +1,30 @@
 import streamlit as st
 from streamlit_theme import st_theme # https://pypi.org/project/st-theme/
 
-# Check the theme before accessing its items
-print("this is 1 from card")
-theme = st_theme(adjust=True) 
+# Initialize the theme as None
+theme = None
 
-background_color = theme['backgroundColor']
-text_color = theme['fadedText60']
-border_color = theme['fadedText10']    
+def initialize_theme(page_id):
+    global theme
+    if theme is None:
+        theme = st_theme(adjust=True,key=int(page_id))
+
+# theme = st_theme(adjust=True) 
+# background_color = theme['backgroundColor']
+# text_color = theme['fadedText60']
+# border_color = theme['fadedText10'] 
 
 def st_card(title, country, location, date, page_id):
+
+    # Ensure the theme is initialized
+    initialize_theme(page_id)
+    
+    background_color = 'black'
+    text_color = 'white'
+    border_color = 'black'
+
+    # Check the theme before accessing its items
+   #print("this is 1 from card")
     # Create a card with an anchor tag
     st.markdown(
         f"""
@@ -43,4 +58,10 @@ def st_card(title, country, location, date, page_id):
         """,
         unsafe_allow_html=True
     )
+
+if __name__ == "__main__":
+    st_card()
+
+
+    
     

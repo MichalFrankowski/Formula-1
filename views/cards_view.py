@@ -13,7 +13,7 @@ def load_schedule(season_year):
     return schedule
 
 def cards_view():
-    print("this is 1 from cards_view")
+    #print("this is 1 from cards_view")
     with st.form("season_form",border=False):
         # creating columns
         header = st.columns([10,4,2,2],vertical_alignment="bottom")
@@ -45,3 +45,6 @@ def cards_view():
     st.divider()
     with st.expander("F1 Data"):
          st.dataframe(schedule,hide_index=True)
+
+if __name__ == "__main__":
+    cards_view()
