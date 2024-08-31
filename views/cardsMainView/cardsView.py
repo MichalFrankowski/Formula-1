@@ -4,13 +4,8 @@ import fastf1
 
 # importing custom components
 from components.card import st_card
-
-# Cache the data fetching process to prevent re-fetching on every interaction
-@st.cache_data
-def load_schedule(season_year):
-    schedule = fastf1.get_event_schedule(int(season_year))
-    schedule['EventDate'] = pd.to_datetime(schedule['EventDate']).dt.strftime('%d %b %Y')
-    return schedule
+# importing functions
+from views.cardsMainView.functions.f1LoadSchedule import load_schedule
 
 def cards_view():
     #print("this is 1 from cards_view")
