@@ -2,3 +2,4 @@ streamlit
 pandas
 fastf1
 st-theme
+plotly

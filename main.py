@@ -7,8 +7,8 @@ st.set_page_config(
     layout="wide"
 )
 
-from views.cards_view import cards_view
-from views.cards_detail_view import cards_detail_view
+from views.cardsMainView.cardsView import cards_view
+from views.cardsDetailView.cardDetailView import cards_detail_view
 
 # Function to set the page parameter if not present
 def set_default_page():

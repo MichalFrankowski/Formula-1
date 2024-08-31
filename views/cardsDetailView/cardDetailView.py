@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd 
 import fastf1
+import numpy as np
+import plotly.express as px
+
+from views.cardsDetailView.functions.cardTrack import cards_draw_track
 
 def cards_detail_view():
     # fetching URL parameters
@@ -52,3 +56,11 @@ def cards_detail_view():
     st.divider()
     with st.expander("F1 Data"): 
         st.table(event)
+
+    fig = cards_draw_track(year, card_id)
+
+    # Display the figure using Streamlit
+    st.plotly_chart(fig, theme="streamlit")
+
+if __name__ == "__main__":
+    cards_detail_view()
