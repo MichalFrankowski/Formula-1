@@ -32,7 +32,7 @@ def st_card(title, country, location, date, page_id, year):
             color: {text_color};
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             border: 1px solid {border_color};
-            height: 250px;  /* Fixed height for uniform card sizes */
+            height: 200px;  /* Fixed height for uniform card sizes */
             overflow: hidden;  /* Prevents content overflow */
             text-align: left;
             transition: transform 0.2s ease-in-out; /* Smooth scaling */

@@ -18,6 +18,10 @@ def cards_detail_view():
     #### Header Section ####
     OfficialEventName = event["OfficialEventName"]
     st.header(OfficialEventName)
+    with st.spinner('Wait for it...'):
+        fig = cards_draw_track(year, card_id)
+        # Display the figure using Streamlit
+        st.plotly_chart(fig, theme="streamlit")
     
     #### Subheader Section ####
     # Select the required subheader columns
@@ -56,11 +60,6 @@ def cards_detail_view():
     st.divider()
     with st.expander("F1 Data"): 
         st.table(event)
-
-    fig = cards_draw_track(year, card_id)
-
-    # Display the figure using Streamlit
-    st.plotly_chart(fig, theme="streamlit")
 
 if __name__ == "__main__":
     cards_detail_view()
