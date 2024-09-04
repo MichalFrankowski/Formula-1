@@ -4,6 +4,7 @@ import fastf1
 import numpy as np
 import plotly.express as px
 import concurrent.futures
+import time
 
 def cards_draw_track(year, card_id):
 
@@ -11,6 +12,7 @@ def cards_draw_track(year, card_id):
     session = fastf1.get_session(int(year), int(card_id), 'Q')
     session.load()
 
+    time.sleep(0.3)
     # Get the fastest lap and its position data
     lap = session.laps.pick_fastest()
     pos = lap.get_pos_data()
@@ -51,6 +53,10 @@ def cards_draw_track(year, card_id):
             visible=False  # Hide the entire y-axis
         ),
         margin=dict(l=15, r=15, t=15, b=15),  # Adjust margins
+
+        # Set the width and height of the figure
+        width=50,   # Set the width of the figure (in pixels)
+        height=150   # Set the height of the figure (in pixels)
     )
 
     return fig
