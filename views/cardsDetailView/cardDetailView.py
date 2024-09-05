@@ -1,14 +1,14 @@
 import streamlit as st
 import pandas as pd 
 import fastf1
-import numpy as np
-import plotly.express as px
 import flagpy as fp
 
-
-
 from views.cardsDetailView.functions.cardTrack import cards_draw_track
-from views.cardsDetailView.functions.f1LoadEvent import load_event
+
+# Cache the data fetching process to prevent re-fetching on every interaction
+@st.cache_data
+def load_event(year, card_id):
+    return fastf1.get_event(int(year), int(card_id))
 
 def cards_detail_view():
     # fetching URL parameters
@@ -17,12 +17,12 @@ def cards_detail_view():
     card_id = params.get("card_id")
     
     # fetching event data
-    event = fastf1.get_event(int(year), int(card_id))
-    #event = load_event(int(year), int(card_id))
+    #event = fastf1.get_event(int(year), int(card_id))
+    event_details = load_event(int(year), int(card_id))
     #print(event)
     
     #### Header Section ####
-    OfficialEventName = event["OfficialEventName"]
+    OfficialEventName = event_details["OfficialEventName"]
     
     header = st.columns([1, 7], vertical_alignment="bottom", gap="small")
   
@@ -35,19 +35,22 @@ def cards_detail_view():
     subheader_selection= ["Country", "Location", "EventDate"]
 
     # Create columns for subheaders
-    subheader = st.columns([3, 3, 4, 3 ,6], vertical_alignment="center", gap="small")
+    subheader = st.columns([1, 1, 1, 1 ,2], vertical_alignment="center", gap="small")
 
     # Loop through the selected subheader columns and display each one
-    for idx, col in enumerate(subheader_selection):
+    circut_placeholder = subheader[0].empty()
+    for idx, col in enumerate(subheader_selection, start=1):
         if col == "EventDate":
             # Format the EventDate
-            event_date = pd.Timestamp(event[col]).strftime('%d %b %Y')
-            subheader[idx].subheader(f"{col}: {event_date}")
-        else:
-            subheader[idx].subheader(f"{col}: {event[col]}")
-    
-    circut_placeholder = subheader[3].empty()
+            event_date = pd.Timestamp(event_details[col]).strftime('%d %b %Y')
+            subheader[idx].text(col)
+            subheader[idx].subheader(event_date)
             
+        else:
+            subheader[idx].text(col)
+            subheader[idx].subheader(event_details[col])
+    
+        
     st.divider()
     
     #### Show Events Date/Time Section ####
@@ -59,8 +62,8 @@ def cards_detail_view():
 
     # Loop through the session and time/date columns simultaneously
     for idx, (session_col, time_date_col) in enumerate(zip(session_selection, time_date_selection)):
-        session_name = event[session_col]
-        session_time = pd.Timestamp(event[time_date_col]).strftime('%d %b %Y %H:%M UTC')
+        session_name = event_details[session_col]
+        session_time = pd.Timestamp(event_details[time_date_col]).strftime('%d %b %Y %H:%M UTC')
         
         # Display session name and time using st.metric
         #event_session[idx].metric(label=session_name, value=session_time)
@@ -69,14 +72,16 @@ def cards_detail_view():
         
     st.divider()
     with st.expander("F1 Data"): 
-        st.table(event)
+        df_event_api = pd.DataFrame([event_details])
+        st.table(df_event_api)
         
-    if event["Country"] in ['United Kingdom','United States','Netherlands', 'United Arab Emirates']:
-        event["Country"] = str('The ' + event["Country"])
-    
-    
+    #### Placeholders Section ####
+    # adjusting the country names for flagpy lib
+    if event_details["Country"] in ['United Kingdom','United States','Netherlands', 'United Arab Emirates']:
+        event_details["Country"] = str('The ' + event_details["Country"])
+     
     with st.spinner('Loading Flag Data...'):
-        flag_img = fp.get_flag_img(event["Country"])
+        flag_img = fp.get_flag_img(event_details["Country"])
         flag_placeholder.image(flag_img)
     
     with circut_placeholder:

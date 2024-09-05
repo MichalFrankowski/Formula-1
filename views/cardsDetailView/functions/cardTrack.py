@@ -6,10 +6,15 @@ import plotly.express as px
 import concurrent.futures
 import time
 
+# Cache the data fetching process to prevent re-fetching on every interaction
+@st.cache_data
+def load_session(year, card_id):
+    return fastf1.get_session(int(year), int(card_id), 'Q')
+
 def cards_draw_track(year, card_id):
 
     # Load session data
-    session = fastf1.get_session(int(year), int(card_id), 'Q')
+    session = load_session(year,card_id)
     session.load()
 
     time.sleep(0.3)
