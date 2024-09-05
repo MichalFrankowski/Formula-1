@@ -4,9 +4,10 @@ import fastf1
 import flagpy as fp
 
 from views.cardsDetailView.functions.cardTrack import cards_draw_track
+from views.cardsDetailView.functions.cardRaceTopResults import card_race_top_results
 
 # Cache the data fetching process to prevent re-fetching on every interaction
-@st.cache_data
+@st.cache_data 
 def load_event(year, card_id):
     return fastf1.get_event(int(year), int(card_id))
 
@@ -35,7 +36,7 @@ def cards_detail_view():
     subheader_selection= ["Country", "Location", "EventDate"]
 
     # Create columns for subheaders
-    subheader = st.columns([1, 1, 1, 1 ,2], vertical_alignment="center", gap="small")
+    subheader = st.columns([1, 1, 1, 1 ,6], vertical_alignment="center", gap="small")
 
     # Loop through the selected subheader columns and display each one
     circut_placeholder = subheader[0].empty()
@@ -49,8 +50,8 @@ def cards_detail_view():
         else:
             subheader[idx].text(col)
             subheader[idx].subheader(event_details[col])
-    
-        
+            results_placeholder = subheader[4].empty()
+
     st.divider()
     
     #### Show Events Date/Time Section ####
@@ -90,6 +91,10 @@ def cards_detail_view():
             # Display the figure using Streamlit
     
     circut_placeholder.plotly_chart(fig, theme="streamlit")
+    
+    race_top_results = card_race_top_results(year, card_id)
+    results_placeholder.table(race_top_results)
+    #st.dataframe(race_top_results,hide_index =True)
     
 if __name__ == "__main__":
     cards_detail_view()

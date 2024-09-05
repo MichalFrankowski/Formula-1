@@ -1,10 +1,8 @@
 import streamlit as st
-import pandas as pd 
 import fastf1
 import numpy as np
 import plotly.express as px
 import concurrent.futures
-import time
 
 # Cache the data fetching process to prevent re-fetching on every interaction
 @st.cache_data
@@ -17,7 +15,6 @@ def cards_draw_track(year, card_id):
     session = load_session(year,card_id)
     session.load()
 
-    time.sleep(0.3)
     # Get the fastest lap and its position data
     lap = session.laps.pick_fastest()
     pos = lap.get_pos_data()
@@ -60,7 +57,7 @@ def cards_draw_track(year, card_id):
         margin=dict(l=15, r=15, t=15, b=15),  # Adjust margins
 
         # Set the width and height of the figure
-        width=50,   # Set the width of the figure (in pixels)
+        width=100,   # Set the width of the figure (in pixels)
         height=150   # Set the height of the figure (in pixels)
     )
 
