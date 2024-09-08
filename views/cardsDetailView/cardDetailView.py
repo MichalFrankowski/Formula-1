@@ -36,7 +36,7 @@ def cards_detail_view():
     subheader_selection= ["Country", "Location", "EventDate"]
 
     # Create columns for subheaders
-    subheader = st.columns([1, 1, 1, 1 ,6], vertical_alignment="center", gap="small")
+    subheader = st.columns([2, 2, 2, 2, 1, 6], vertical_alignment="center", gap="small")
 
     # Loop through the selected subheader columns and display each one
     circut_placeholder = subheader[0].empty()
@@ -50,7 +50,7 @@ def cards_detail_view():
         else:
             subheader[idx].text(col)
             subheader[idx].subheader(event_details[col])
-            results_placeholder = subheader[4].empty()
+            results_placeholder = subheader[5].empty()
 
     st.divider()
     
@@ -93,7 +93,7 @@ def cards_detail_view():
     circut_placeholder.plotly_chart(fig, theme="streamlit")
     
     race_top_results = card_race_top_results(year, card_id)
-    results_placeholder.table(race_top_results)
+    results_placeholder.dataframe(race_top_results, use_container_width=True, hide_index=True)
     #st.dataframe(race_top_results,hide_index =True)
     
 if __name__ == "__main__":
