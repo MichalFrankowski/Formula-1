@@ -3,6 +3,9 @@ import pandas as pd
 import fastf1
 import flagpy as fp
 import concurrent.futures
+import json
+
+from streamlit_lottie import st_lottie
 
 from views.cardsDetailView.functions.cardTrack import cards_draw_track
 from views.cardsDetailView.functions.cardRaceTopResults import card_race_top_results
@@ -97,15 +100,25 @@ def cards_detail_view():
     #         race_top_results = card_race_top_results(year, card_id)
     # results_placeholder.dataframe(race_top_results, use_container_width=True, hide_index=True)
     # #st.dataframe(race_top_results,hide_index =True)
+    def load_lottie_file(filepath: str):
+        with open(filepath, "r") as f:
+            return json.load(f)
+        
+    lottie_path = "./assets/img/loading.json" 
+    # Load the Lottie animation from the file
+    lottie_animation = load_lottie_file(lottie_path)
+    
+    if lottie_animation:
+        with circut_placeholder.container():
+            st_lottie(lottie_animation, key="loading_track", height=100, width=100)
+        with results_placeholder.container():
+            st_lottie(lottie_animation, key="loading_result", height=100, width=100)
 
     # Start both tasks concurrently
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        
-            loading_icon = '🔄'
            # Display the simulated spinner
-            circut_placeholder.markdown(f"{loading_icon} Loading Track Data...")
-            results_placeholder.markdown(f"{loading_icon} Loading Top Results...")
-
+            #circut_placeholder.markdown(loading_icon + "Loading Track Data...")
+        
             future_track = executor.submit(cards_draw_track, year, card_id)  # Replace with actual year, card_id
             future_results = executor.submit(card_race_top_results, year, card_id)  # Replace with actual year, card_id
             
