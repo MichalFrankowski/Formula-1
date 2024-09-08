@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd 
 import fastf1
 import flagpy as fp
+import concurrent.futures
 
 from views.cardsDetailView.functions.cardTrack import cards_draw_track
 from views.cardsDetailView.functions.cardRaceTopResults import card_race_top_results
@@ -36,10 +37,10 @@ def cards_detail_view():
     subheader_selection= ["Country", "Location", "EventDate"]
 
     # Create columns for subheaders
-    subheader = st.columns([2, 2, 2, 2, 1, 6], vertical_alignment="center", gap="small")
+    subheader = st.columns([2, 3, 3, 3, 1, 6], vertical_alignment="center", gap="small")
 
     # Loop through the selected subheader columns and display each one
-    circut_placeholder = subheader[0].empty()
+    circut_placeholder = subheader[0].empty()        
     for idx, col in enumerate(subheader_selection, start=1):
         if col == "EventDate":
             # Format the EventDate
@@ -85,16 +86,36 @@ def cards_detail_view():
         flag_img = fp.get_flag_img(event_details["Country"])
         flag_placeholder.image(flag_img)
     
-    with circut_placeholder:
-        with st.spinner('Loading Track Data...'):
-            fig = cards_draw_track(year, card_id)
-            # Display the figure using Streamlit
+    # with circut_placeholder:
+    #     with st.spinner('Loading Track Data...'):
+    #         fig = cards_draw_track(year, card_id)
+    #         # Display the figure using Streamlit
+    # circut_placeholder.plotly_chart(fig, theme="streamlit")
     
+    # with results_placeholder:
+    #     with st.spinner('Loading Top Results...'):
+    #         race_top_results = card_race_top_results(year, card_id)
+    # results_placeholder.dataframe(race_top_results, use_container_width=True, hide_index=True)
+    # #st.dataframe(race_top_results,hide_index =True)
+
+    # Start both tasks concurrently
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        
+            loading_icon = '🔄'
+           # Display the simulated spinner
+            circut_placeholder.markdown(f"{loading_icon} Loading Track Data...")
+            results_placeholder.markdown(f"{loading_icon} Loading Top Results...")
+
+            future_track = executor.submit(cards_draw_track, year, card_id)  # Replace with actual year, card_id
+            future_results = executor.submit(card_race_top_results, year, card_id)  # Replace with actual year, card_id
+            
+            # Retrieve the results of both tasks
+            fig = future_track.result()
+            race_top_results = future_results.result()
+
+    # Display the loaded data
     circut_placeholder.plotly_chart(fig, theme="streamlit")
-    
-    race_top_results = card_race_top_results(year, card_id)
     results_placeholder.dataframe(race_top_results, use_container_width=True, hide_index=True)
-    #st.dataframe(race_top_results,hide_index =True)
     
 if __name__ == "__main__":
     cards_detail_view()

@@ -4,3 +4,4 @@ fastf1
 st-theme
 plotly
 flagpy
+streamlit-lottie
