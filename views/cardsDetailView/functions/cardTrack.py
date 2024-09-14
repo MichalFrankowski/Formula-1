@@ -2,7 +2,7 @@ import streamlit as st
 import fastf1
 import numpy as np
 import plotly.express as px
-import concurrent.futures
+import 
 
 # Cache the data fetching process to prevent re-fetching on every interaction
 @st.cache_data
@@ -63,17 +63,6 @@ def cards_draw_track(year, card_id):
 
     return fig
 
-if __name__ == "__main__": #https://discuss.streamlit.io/t/make-apps-faster-by-moving-heavy-computation-to-a-separate-process/68541
-    
-    # Pick max number of concurrent processes. Depends on how heavy your computation is, and how
-    # powerful your machine is.
-    MAX_WORKERS = 50
-
-    @st.cache_resource
-    def get_executor():
-        return concurrent.futures.ProcessPoolExecutor(max_workers=MAX_WORKERS)
-
-    future = get_executor().submit(
-      # Function to run on a separate process.
-      cards_draw_track())
+if __name__ == "__main__": 
+      cards_draw_track()
 

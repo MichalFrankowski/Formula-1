@@ -115,7 +115,7 @@ def cards_detail_view():
             st_lottie(lottie_animation, key="loading_result", height=100, width=100)
 
     # Start both tasks concurrently
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor() as executor: #https://discuss.streamlit.io/t/make-apps-faster-by-moving-heavy-computation-to-a-separate-process/68541
            # Display the simulated spinner
             #circut_placeholder.markdown(loading_icon + "Loading Track Data...")
         
