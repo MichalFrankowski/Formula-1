@@ -2,15 +2,10 @@ import streamlit as st
 import fastf1
 import numpy as np
 import plotly.express as px
-import 
 
-# Cache the data fetching process to prevent re-fetching on every interaction
-@st.cache_data
-def load_session(year, card_id):
-    return fastf1.get_session(int(year), int(card_id), 'Q')
+from api.f1API import load_session
 
 def cards_draw_track(year, card_id):
-
     # Load session data
     session = load_session(year,card_id)
     session.load()

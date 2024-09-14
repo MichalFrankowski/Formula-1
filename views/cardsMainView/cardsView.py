@@ -5,7 +5,6 @@ import fastf1
 # importing custom components
 from components.card import st_card
 # importing functions
-# from views.cardsMainView.functions.f1LoadSchedule import load_schedule
 from api.f1API import load_schedule
 
 def cards_view():

@@ -9,5 +9,11 @@ def load_schedule(season_year):
     schedule['EventDate'] = pd.to_datetime(schedule['EventDate']).dt.strftime('%d %b %Y')
     return schedule
 
-if __name__ == "__main__":
-    load_schedule()
+@st.cache_data
+def load_session(year, card_id):
+    return fastf1.get_session(int(year), int(card_id), 'Q')
+
+@st.cache_data
+def load_event(year, card_id):
+    return fastf1.get_event(int(year), int(card_id),backend='fastf1') 
+

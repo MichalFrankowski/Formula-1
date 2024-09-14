@@ -2,10 +2,7 @@ import fastf1
 import pandas as pd
 import streamlit as st
 
-# Cache the data fetching process to prevent re-fetching on every interaction
-@st.cache_data
-def load_event(year, card_id):
-    return fastf1.get_event(int(year), int(card_id),backend='fastf1') 
+from api.f1API import load_event
 
 def card_race_top_results(year, card_id):
     # Get the the evnet
