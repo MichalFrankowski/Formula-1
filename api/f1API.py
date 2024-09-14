@@ -15,5 +15,12 @@ def load_session(year, card_id):
 
 @st.cache_data
 def load_event(year, card_id):
-    return fastf1.get_event(int(year), int(card_id),backend='fastf1') 
+    return fastf1.get_event(int(year), int(card_id), backend='fastf1') 
+
+# Cache the session fetching process
+@st.cache_data
+def load_session_load(year, card_id, session_type='Q'):
+    session = fastf1.get_session(int(year), int(card_id), session_type, backend='fastf1') 
+    session.load()
+    return session
 

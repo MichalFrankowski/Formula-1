@@ -7,13 +7,9 @@ import json
 
 from streamlit_lottie import st_lottie
 
+from api.f1API import load_event, load_session_load
 from views.cardsDetailView.functions.cardTrack import cards_draw_track
 from views.cardsDetailView.functions.cardRaceTopResults import card_race_top_results
-
-# Cache the data fetching process to prevent re-fetching on every interaction
-@st.cache_data 
-def load_event(year, card_id):
-    return fastf1.get_event(int(year), int(card_id))
 
 def cards_detail_view():
     # fetching URL parameters
@@ -76,6 +72,14 @@ def cards_detail_view():
         event_session[idx].subheader(session_time)
         
     st.divider()
+    
+    session = load_session_load(int(year), int(card_id))
+    drivers = session.results
+
+    # Display driver information
+    st.write("Driver Information:")
+    st.write(drivers)
+    
     with st.expander("F1 Data"): 
         df_event_api = pd.DataFrame([event_details])
         st.table(df_event_api)
@@ -89,17 +93,6 @@ def cards_detail_view():
         flag_img = fp.get_flag_img(event_details["Country"])
         flag_placeholder.image(flag_img)
     
-    # with circut_placeholder:
-    #     with st.spinner('Loading Track Data...'):
-    #         fig = cards_draw_track(year, card_id)
-    #         # Display the figure using Streamlit
-    # circut_placeholder.plotly_chart(fig, theme="streamlit")
-    
-    # with results_placeholder:
-    #     with st.spinner('Loading Top Results...'):
-    #         race_top_results = card_race_top_results(year, card_id)
-    # results_placeholder.dataframe(race_top_results, use_container_width=True, hide_index=True)
-    # #st.dataframe(race_top_results,hide_index =True)
     def load_lottie_file(filepath: str):
         with open(filepath, "r") as f:
             return json.load(f)
